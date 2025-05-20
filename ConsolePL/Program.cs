@@ -70,6 +70,7 @@ namespace ConsolePL
                     Console.WriteLine("\n No es una opcion validad");
                     break;
 
+
             }
             Console.ReadKey();
         }

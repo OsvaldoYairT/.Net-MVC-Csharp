@@ -37,12 +37,13 @@ namespace BL
 
                             result.Objects.Add(empleado);
                             result.Correct = true;
+
                         }
                     }
                     else
                     {
                         result.Correct = false;
-                        result.ErrorMessage = "Ocurrio un error la tabla no contiene informacion ";
+                        result.ErrorMessage = "Ocurrio un error la tabla no contiene informacion correcta";
                     }
                 }
             }
