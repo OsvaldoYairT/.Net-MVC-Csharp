@@ -27,6 +27,41 @@ namespace DL
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Empleado> Empleado { get; set; }
+        public virtual DbSet<Empresa> Empresa { get; set; }
+    
+        public virtual int AddUsuario(string nombre, string apellidoPaterno, string apellidoMaterno, Nullable<byte> edad, string dirección, string sexo, Nullable<int> idEmpresa)
+        {
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var apellidoPaternoParameter = apellidoPaterno != null ?
+                new ObjectParameter("ApellidoPaterno", apellidoPaterno) :
+                new ObjectParameter("ApellidoPaterno", typeof(string));
+    
+            var apellidoMaternoParameter = apellidoMaterno != null ?
+                new ObjectParameter("ApellidoMaterno", apellidoMaterno) :
+                new ObjectParameter("ApellidoMaterno", typeof(string));
+    
+            var edadParameter = edad.HasValue ?
+                new ObjectParameter("Edad", edad) :
+                new ObjectParameter("Edad", typeof(byte));
+    
+            var direcciónParameter = dirección != null ?
+                new ObjectParameter("Dirección", dirección) :
+                new ObjectParameter("Dirección", typeof(string));
+    
+            var sexoParameter = sexo != null ?
+                new ObjectParameter("Sexo", sexo) :
+                new ObjectParameter("Sexo", typeof(string));
+    
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddUsuario", nombreParameter, apellidoPaternoParameter, apellidoMaternoParameter, edadParameter, direcciónParameter, sexoParameter, idEmpresaParameter);
+        }
     
         public virtual ObjectResult<EmpleadoGetAll_Result> EmpleadoGetAll()
         {

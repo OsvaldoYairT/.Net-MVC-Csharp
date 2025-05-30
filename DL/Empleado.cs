@@ -10,8 +10,9 @@
 namespace DL
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class EmpleadoGetAll_Result
+    public partial class Empleado
     {
         public int IdEmpleado { get; set; }
         public string Nombre { get; set; }
@@ -20,7 +21,8 @@ namespace DL
         public byte Edad { get; set; }
         public string Dirección { get; set; }
         public string Sexo { get; set; }
-        public int IdEmpresa { get; set; }
-        public string Empresa { get; set; }
+        public Nullable<int> IdEmpresa { get; set; }
+    
+        public virtual Empresa Empresa { get; set; }
     }
 }

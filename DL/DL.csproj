@@ -51,10 +51,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Empleado.cs">
+      <DependentUpon>ModelConect.tt</DependentUpon>
+    </Compile>
     <Compile Include="EmpleadoGetAll_Result.cs">
       <DependentUpon>ModelConect.tt</DependentUpon>
     </Compile>
     <Compile Include="EmpleadoGetById_Result.cs">
+      <DependentUpon>ModelConect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Empresa.cs">
       <DependentUpon>ModelConect.tt</DependentUpon>
     </Compile>
     <Compile Include="ModelConect.Context.cs">

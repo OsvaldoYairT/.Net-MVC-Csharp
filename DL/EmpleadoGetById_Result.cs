@@ -20,6 +20,7 @@ namespace DL
         public byte Edad { get; set; }
         public string Dirección { get; set; }
         public string Sexo { get; set; }
-        public Nullable<int> IdEmpresa { get; set; }
+        public int IdEmpresa { get; set; }
+        public string Empresa { get; set; }
     }
 }

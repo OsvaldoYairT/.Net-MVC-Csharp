@@ -4,23 +4,121 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PruebasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PruebasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="IdEmpleado" />
+          </Key>
+          <Property Name="IdEmpleado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Edad" Type="tinyint" Nullable="false" />
+          <Property Name="Dirección" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Sexo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IdEmpresa" Type="int" />
+        </EntityType>
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="IdEmpresa" />
+          </Key>
+          <Property Name="IdEmpresa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Empleado_Empresa">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="0..1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="IdEmpresa" />
+            </Principal>
+            <Dependent Role="Empleado">
+              <PropertyRef Name="IdEmpresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
+          <Parameter Name="Edad" Type="tinyint" Mode="In" />
+          <Parameter Name="Dirección" Type="varchar" Mode="In" />
+          <Parameter Name="Sexo" Type="varchar" Mode="In" />
+          <Parameter Name="IdEmpresa" Type="int" Mode="In" />
+        </Function>
         <Function Name="EmpleadoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="EmpleadoGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdEmpleado" Type="int" Mode="In" />
         </Function>
-        <EntityContainer Name="PruebasModelStoreContainer" />
-      </Schema>
-    </edmx:StorageModels>
+        <EntityContainer Name="PruebasModelStoreContainer">
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Empleado_Empresa" Association="Self.FK_Empleado_Empresa">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="Empleado" EntitySet="Empleado" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PruebasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="PruebasEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Empleado" EntityType="PruebasModel.Empleado" />
+          <EntitySet Name="Empresa" EntityType="PruebasModel.Empresa" />
+          <AssociationSet Name="FK_Empleado_Empresa" Association="PruebasModel.FK_Empleado_Empresa">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="Empleado" EntitySet="Empleado" />
+          </AssociationSet>
+          <FunctionImport Name="AddUsuario">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
+            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+            <Parameter Name="Edad" Mode="In" Type="Byte" />
+            <Parameter Name="Dirección" Mode="In" Type="String" />
+            <Parameter Name="Sexo" Mode="In" Type="String" />
+            <Parameter Name="IdEmpresa" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="EmpleadoGetAll" ReturnType="Collection(PruebasModel.EmpleadoGetAll_Result)" />
           <FunctionImport Name="EmpleadoGetById" ReturnType="Collection(PruebasModel.EmpleadoGetById_Result)">
             <Parameter Name="IdEmpleado" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="IdEmpleado" />
+          </Key>
+          <Property Name="IdEmpleado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Edad" Type="Byte" Nullable="false" />
+          <Property Name="Dirección" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Sexo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IdEmpresa" Type="Int32" />
+          <NavigationProperty Name="Empresa" Relationship="PruebasModel.FK_Empleado_Empresa" FromRole="Empleado" ToRole="Empresa" />
+        </EntityType>
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="IdEmpresa" />
+          </Key>
+          <Property Name="IdEmpresa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Empleado" Relationship="PruebasModel.FK_Empleado_Empresa" FromRole="Empresa" ToRole="Empleado" />
+        </EntityType>
+        <Association Name="FK_Empleado_Empresa">
+          <End Type="PruebasModel.Empresa" Role="Empresa" Multiplicity="0..1" />
+          <End Type="PruebasModel.Empleado" Role="Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="IdEmpresa" />
+            </Principal>
+            <Dependent Role="Empleado">
+              <PropertyRef Name="IdEmpresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <ComplexType Name="EmpleadoGetAll_Result">
           <Property Type="Int32" Name="IdEmpleado" Nullable="false" />
           <Property Type="String" Name="Nombre" Nullable="false" MaxLength="25" />
@@ -29,7 +127,8 @@
           <Property Type="Byte" Name="Edad" Nullable="false" />
           <Property Type="String" Name="Dirección" Nullable="false" MaxLength="150" />
           <Property Type="String" Name="Sexo" Nullable="false" MaxLength="10" />
-          <Property Type="Int32" Name="IdEmpresa" Nullable="true" />
+          <Property Type="Int32" Name="IdEmpresa" Nullable="false" />
+          <Property Type="String" Name="Empresa" Nullable="false" MaxLength="100" />
         </ComplexType>
         <ComplexType Name="EmpleadoGetById_Result">
           <Property Type="Int32" Name="IdEmpleado" Nullable="false" />
@@ -39,7 +138,8 @@
           <Property Type="Byte" Name="Edad" Nullable="false" />
           <Property Type="String" Name="Dirección" Nullable="false" MaxLength="150" />
           <Property Type="String" Name="Sexo" Nullable="false" MaxLength="10" />
-          <Property Type="Int32" Name="IdEmpresa" Nullable="true" />
+          <Property Type="Int32" Name="IdEmpresa" Nullable="false" />
+          <Property Type="String" Name="Empresa" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -47,6 +147,30 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PruebasModelStoreContainer" CdmEntityContainer="PruebasEntities" >
+          <EntitySetMapping Name="Empleado">
+            <EntityTypeMapping TypeName="PruebasModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="Dirección" ColumnName="Dirección" />
+                <ScalarProperty Name="Edad" ColumnName="Edad" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empresa">
+            <EntityTypeMapping TypeName="PruebasModel.Empresa">
+              <MappingFragment StoreEntitySet="Empresa">
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddUsuario" FunctionName="PruebasModel.Store.AddUsuario" />
           <FunctionImportMapping FunctionImportName="EmpleadoGetAll" FunctionName="PruebasModel.Store.EmpleadoGetAll">
             <ResultMapping>
               <ComplexTypeMapping TypeName="PruebasModel.EmpleadoGetAll_Result">
@@ -58,6 +182,7 @@
                 <ScalarProperty Name="Dirección" ColumnName="Dirección" />
                 <ScalarProperty Name="Sexo" ColumnName="Sexo" />
                 <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="Empresa" ColumnName="Empresa" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -72,6 +197,7 @@
                 <ScalarProperty Name="Dirección" ColumnName="Dirección" />
                 <ScalarProperty Name="Sexo" ColumnName="Sexo" />
                 <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="Empresa" ColumnName="Empresa" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
